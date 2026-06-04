@@ -1,0 +1,1 @@
+cat /tmp/ece-clean-template/engine/nightly_maintenance.py | cat

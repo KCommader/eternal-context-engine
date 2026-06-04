@@ -1,0 +1,1 @@
+cat /tmp/ece-clean-template/engine/__version__.py | cat

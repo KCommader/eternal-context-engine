@@ -1,0 +1,1 @@
+cat /tmp/ece-clean-template/mcp_server.py | cat

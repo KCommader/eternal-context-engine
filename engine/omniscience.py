@@ -1,0 +1,1 @@
+cat /tmp/ece-clean-template/engine/omniscience.py | cat

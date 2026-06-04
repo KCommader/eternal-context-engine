@@ -1,0 +1,1 @@
+cat /tmp/ece-clean-template/engine/install_nightly_timer.sh | cat
