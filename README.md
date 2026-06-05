@@ -1,4 +1,3 @@
-[FULL GOOD VERSION ASSEMBLED FROM THE read_file CHUNKS:
 <div align="center">
 
 <img src="assets/logo.svg" alt="Eternal Context Engine" width="720" />
@@ -124,4 +123,4 @@ Copyright © 2026 KCommander. All rights reserved.
 Issues and PRs welcome. The goal is a simple, portable, powerful memory layer — keep it lean.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for ideas on where to contribute and the core principles (portable, Markdown-first, no lock-in). If it pushes the mission forward, it belongs here.
-]}
+]
