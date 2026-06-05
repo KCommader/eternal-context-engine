@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/logo.png" alt="Eternal Context Engine" width="720" />
+<img src="assets/logo.svg" alt="Eternal Context Engine" width="720" />
 
 ### Eternal Memory for Any AI — Local, Private, Portable
 #### Eternal Context Engine (ECE)
