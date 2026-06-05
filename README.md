@@ -1,7 +1,6 @@
-[EXACT LITERAL TEXT FROM THE 4 read_file TOOL RESULTS CONCATENATED (the full good 682 line README from the local after fixes):
 <div align="center">
 
-<img src="assets/logo.svg" alt="Eternal Context Engine" width="720" />
+<img src="assets/logo.png" alt="Eternal Context Engine" width="720" />
 
 ### Eternal Memory for Any AI — Local, Private, Portable
 #### Eternal Context Engine (ECE)
@@ -260,7 +259,7 @@ All settings live in `vault/config.yaml` — a human-readable file that ships pr
 
 ```yaml
 embedding:
-  # ── Pick the tier that fits your hardware ──────────────────────────────────
+  # ── Pick the tier that fits your hardware ───────────────────────────────────
   #  LIGHT     ~90MB   384-dim  EN only    BAAI/bge-small-en-v1.5
   #              Raspberry Pi, low-RAM servers, fastest cold start
   #
@@ -368,12 +367,12 @@ python engine/omniscience.py doctor                   # Health check
 # MCP HTTP server (for NAS / network access)
 python engine/omniscience.py mcp-start               # Start MCP server (port 8766)
 python engine/omniscience.py mcp-status               # Check MCP server
-python engine/omniscience.py mcp-stop               # Stop MCP server
+python engine/omniscience.py mcp-stop                 # Stop MCP server
 
 # Sentinel (auto-restarts engine on crash)
 python engine/omniscience.py sentinel-start           # Start sentinel
 python engine/omniscience.py sentinel-status           # Check sentinel
-python engine/omniscience.py sentinel-stop             # Stop sentinel
+python engine/omniscience.py sentinel-stop           # Stop sentinel
 
 # Backup
 python engine/omniscience.py backup                    # Snapshot vault + index
@@ -383,6 +382,8 @@ python engine/omniscience.py backup                    # Snapshot vault + index
 
 ```bash
 docker compose up -d              # Start engine + vault watcher
+docker compose logs -f             # Watch logs
+docker compose down                # Stop
 ```
 
 Your vault and LanceDB index are bind-mounted from the host — nothing lives inside the container. Delete the container, your data is untouched.
@@ -625,7 +626,7 @@ The template ships a complete starter `.obsidian/` configuration so the second y
 
 Everything else is plain Markdown + standard Obsidian features (mobile sync via Obsidian Sync or git, Excalidraw canvases, bases, plugins, themes). Delete the demo Knowledge notes and fill with your own — the graph and styles stay.
 
-> The vault is the source of truth. Obsidian is the most beautiful way to live in it (graph view, backlinks, properties). The included functional frontend demo (open `frontend/index.html`) gives the quick 3D wow. Real power + joy is in Obsidian's native graph + properties + backlinks as your memory grows over months and years.
+> The vault is the source of truth. Obsidian is the most beautiful way to live in it (graph view, backlinks, properties). The included functional frontend demo (frontend/index.html) gives the quick 3D wow. Real power + joy is in Obsidian's native graph + properties + backlinks as your memory grows over months and years.
 
 **Pro tip:** Once your vault has real content, the graph becomes hypnotic. That's the interface users remember.
 
@@ -679,4 +680,3 @@ Copyright © 2026 KCommander. All rights reserved.
 Issues and PRs welcome. The goal is a simple, portable, powerful memory layer — keep it lean.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for ideas on where to contribute and the core principles (portable, Markdown-first, no lock-in). If it pushes the mission forward, it belongs here.
-]

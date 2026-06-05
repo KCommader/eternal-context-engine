@@ -228,6 +228,273 @@
     // Full working code from the reviewed functional frontend (the perfect version)
     // All functions: initGraph, performSearch, showNodeModal, editNode, linkToNew, addRandomNode, focusOnRecent, focusOnHighValue, applyTierFilters, runMaxSimDemo, toggleLiveMode, showStoreModal, storeMemory, ingestDemo, window.onload, window.ECE_DEMO
     // The complete self-contained demo that makes the 3D graph, tier filters that work, MaxSim demo, live mode, etc.
+
+    let currentNodes = [];
+    let graph;
+
+    function initGraph() {
+      const container = document.getElementById('3d-graph');
+      if (!container) return;
+
+      // Sample data for the demo (perfect version)
+      currentNodes = [
+        { id: 'root', name: 'Eternal Context (ECE)', group: 1, val: 28, tier: 'long' },
+        { id: 'hw', name: 'Hardware Profile', group: 2, val: 16, tier: 'long' },
+        { id: 'mv', name: 'Multi-Vector MaxSim (per-token)', group: 2, val: 20, tier: 'long' },
+        { id: 'bm', name: 'BM25 First Class (protected)', group: 3, val: 14, tier: 'long' },
+        { id: 'safe', name: 'Local-Only Keywords', group: 4, val: 11, tier: 'short' },
+        { id: 'policy', name: 'Template Policy', group: 1, val: 9, tier: 'long' },
+        { id: 'client', name: 'Client: Local Agent', group: 5, val: 13, tier: 'cache' },
+        { id: 'hotwin', name: 'hot_windows: 4-6h,15-18h,19-23h UTC', group: 2, val: 12, tier: 'long' }
+      ];
+      const links = [
+        { source: 'root', target: 'hw' }, { source: 'root', target: 'mv' }, { source: 'root', target: 'bm' },
+        { source: 'hw', target: 'safe' }, { source: 'mv', target: 'safe' }, { source: 'bm', target: 'policy' },
+        { source: 'policy', target: 'client' },
+        { source: 'mv', target: 'hotwin' }, { source: 'hw', target: 'hotwin' }
+      ];
+
+      window.graph = new ThreeForceGraph()(container)
+        .graphData({ nodes: currentNodes, links })
+        .nodeLabel(n => n.name)
+        .nodeColor(n => n.group === 1 ? '#DFFF00' : n.group === 2 ? '#22D3EE' : '#F59E0B')
+        .nodeVal(n => n.val)
+        .linkColor(() => '#ffffff18')
+        .linkWidth(1.2)
+        .onNodeClick(n => showNodeModal(n));
+
+      setTimeout(() => window.graph.cameraPosition({ z: 180 }), 600);
+    }
+
+    function performSearch() {
+      const q = document.getElementById('search-input').value.trim();
+      if (!q) return;
+      
+      const results = currentNodes.filter(n => 
+        n.name.toLowerCase().includes(q.toLowerCase())
+      );
+      
+      if (results.length === 0) {
+        const newNode = {
+          id: 'search-' + Date.now(),
+          name: q,
+          group: 6,
+          val: 8,
+          tier: 'cache'
+        };
+        currentNodes.push(newNode);
+        
+        window.graph.graphData({
+          nodes: currentNodes,
+          links: window.graph.graphData().links
+        });
+        
+        setTimeout(() => {
+          alert('Search simulated. In real use this would hit your local ECE /search endpoint.');
+        }, 300);
+      } else {
+        window.graph.nodeColor(n => results.some(r => r.id === n.id) ? '#DFFF00' : (n.group === 1 ? '#DFFF00' : n.group === 2 ? '#22D3EE' : '#F59E0B'));
+        
+        setTimeout(() => {
+          window.graph.nodeColor(n => n.group === 1 ? '#DFFF00' : n.group === 2 ? '#22D3EE' : '#F59E0B');
+        }, 1800);
+      }
+    }
+
+    function showNodeModal(node) {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/70 flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="glass w-[380px] rounded-3xl p-5 border border-white/10">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <div class="font-semibold text-lg">${node.name}</div>
+              <div class="text-xs text-white/50">ID: ${node.id} • Tier: ${node.tier || 'Long-term'}</div>
+            </div>
+            <button onclick="this.closest('.fixed').remove()" class="text-white/50 hover:text-white">✕</button>
+          </div>
+          
+          <div class="space-y-3 text-sm">
+            <div>
+              <div class="text-white/60 text-xs mb-1">CONTENT PREVIEW</div>
+              <div class="text-white/90 text-sm leading-snug">This is a simulated node from the ECE search results. In a real session this would contain the actual note content or memory.</div>
+            </div>
+            
+            <div class="flex gap-2">
+              <button onclick="editNode('${node.id}', this)" class="flex-1 py-2 rounded-2xl bg-white/5 hover:bg-white/10 text-sm flex items-center justify-center gap-2">
+                <i class="fa-solid fa-edit"></i> <span>Edit</span>
+              </button>
+              <button onclick="linkToNew('${node.id}', this)" class="flex-1 py-2 rounded-2xl bg-white/5 hover:bg-white/10 text-sm flex items-center justify-center gap-2">
+                <i class="fa-solid fa-link"></i> <span>Link</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function editNode(id, el) {
+      const newName = prompt('Edit node name (demo):', el.closest('.fixed').querySelector('.font-semibold').innerText);
+      if (!newName) return;
+      
+      const data = window.graph.graphData();
+      const node = data.nodes.find(n => n.id === id);
+      if (node) {
+        node.name = newName;
+        window.graph.graphData(data);
+      }
+      el.closest('.fixed').remove();
+    }
+
+    function linkToNew(sourceId, el) {
+      const newName = prompt('Name for new linked node:');
+      if (!newName) return;
+      
+      const data = window.graph.graphData();
+      const newId = 'new-' + Date.now();
+      
+      data.nodes.push({ id: newId, name: newName, group: 6, val: 9, tier: 'cache' });
+      data.links.push({ source: sourceId, target: newId });
+      
+      window.graph.graphData(data);
+      el.closest('.fixed').remove();
+    }
+
+    function addRandomNode() {
+      const data = window.graph.graphData();
+      const newNode = {
+        id: 'manual-' + Date.now(),
+        name: 'New Memory Node',
+        group: 6,
+        val: 10,
+        tier: 'cache'
+      };
+      data.nodes.push(newNode);
+      if (data.nodes.length > 1) {
+        const randomSource = data.nodes[Math.floor(Math.random() * (data.nodes.length - 1))];
+        data.links.push({ source: randomSource.id, target: newNode.id });
+      }
+      window.graph.graphData(data);
+    }
+
+    function focusOnRecent() {
+      window.graph.cameraPosition({ z: 140 }, 800);
+    }
+    
+    function focusOnHighValue() {
+      window.graph.cameraPosition({ z: 90 }, 600);
+    }
+
+    // Tier filters
+    function applyTierFilters() {
+      if (!window.graph) return;
+      const showLong = document.getElementById('f-long')?.checked ?? true;
+      const showShort = document.getElementById('f-short')?.checked ?? true;
+      const showCache = document.getElementById('f-cache')?.checked ?? true;
+
+      const visible = currentNodes.filter(n => {
+        const t = n.tier || 'long';
+        if (t === 'long') return showLong;
+        if (t === 'short') return showShort;
+        if (t === 'cache') return showCache;
+        return true;
+      });
+
+      const visIds = new Set(visible.map(n => n.id));
+      const allLinks = window.graph.graphData().links || [];
+      const visLinks = allLinks.filter(l => {
+        const s = typeof l.source === 'object' ? l.source.id : l.source;
+        const t = typeof l.target === 'object' ? l.target.id : l.target;
+        return visIds.has(s) && visIds.has(t);
+      });
+
+      window.graph.graphData({ nodes: visible, links: visLinks });
+    }
+
+    // MaxSim demo
+    function runMaxSimDemo() {
+      if (!window.graph) return;
+      const highlightIds = new Set(['mv', 'hotwin']);
+      window.graph.nodeColor(n => highlightIds.has(n.id) ? '#DFFF00' : (n.group === 1 ? '#DFFF00' : n.group === 2 ? '#22D3EE' : '#F59E0B'));
+
+      const card = document.createElement('div');
+      card.className = 'fixed bottom-4 right-4 glass max-w-[320px] rounded-2xl p-4 border border-white/10 text-sm z-[70]';
+      card.innerHTML = `
+        <div class="font-semibold mb-1 flex items-center gap-2"><i class="fa-solid fa-microscope text-emerald-400"></i> Multi-Vector MaxSim (token-level)</div>
+        <div class="text-white/80 text-xs leading-snug">
+          Query for "current hot windows" hits the literal list because we stored per-token embeddings + MaxSim.<br><br>
+          Single-vector would have collapsed it into a blurry "time config".
+        </div>
+        <div class="mt-2 text-[10px] text-white/50">RRF fuses with BM25 + dense. GPU accelerates on HIGH profile.</div>
+        <button class="mt-3 text-xs px-3 py-1 rounded bg-white/10 hover:bg-white/20" onclick="this.closest('.fixed').remove(); if(window.graph) window.graph.nodeColor(n => n.group === 1 ? '#DFFF00' : n.group === 2 ? '#22D3EE' : '#F59E0B')">Got it</button>
+      `;
+      document.body.appendChild(card);
+
+      setTimeout(() => {
+        if (card.parentNode) card.parentNode.removeChild(card);
+        if (window.graph) window.graph.nodeColor(n => n.group === 1 ? '#DFFF00' : n.group === 2 ? '#22D3EE' : '#F59E0B');
+      }, 12000);
+    }
+
+    // Live mode (demo)
+    let liveMode = false;
+    const ENGINE_URL = 'http://127.0.0.1:8765';
+
+    async function toggleLiveMode() {
+      const statusEl = document.getElementById('live-status');
+      if (!statusEl) return;
+
+      if (!liveMode) {
+        liveMode = true;
+        statusEl.innerHTML = `<i class="fa-solid fa-circle text-emerald-400 w-3"></i> <span>Live (local engine)</span>`;
+        statusEl.style.color = '#10b981';
+        alert('Live mode enabled. (Demo - connect to your running engine)');
+      } else {
+        liveMode = false;
+        statusEl.innerHTML = `<i class="fa-solid fa-circle w-3"></i> <span>Demo Mode</span>`;
+        statusEl.style.color = '';
+      }
+    }
+
+    function showStoreModal() {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/70 flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="glass w-[380px] rounded-3xl p-5 border border-white/10">
+          <div class="flex justify-between items-start mb-4">
+            <div class="font-semibold text-lg">Store Memory</div>
+            <button onclick="this.closest('.fixed').remove()" class="text-white/50 hover:text-white">✕</button>
+          </div>
+          <textarea id="store-content" class="w-full h-24 bg-white/5 border border-white/10 rounded-xl p-3 text-sm" placeholder="What do you want the AI to remember?"></textarea>
+          <button onclick="storeMemory(this)" class="mt-3 w-full py-2 rounded-2xl bg-white text-black font-medium">Store to Vault</button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function storeMemory(el) {
+      const content = document.getElementById('store-content').value.trim();
+      if (!content) return;
+      alert('Stored (demo): ' + content.slice(0,60) + '... In real use this calls the engine /capture and the classifier routes it to the right tier.');
+      el.closest('.fixed').remove();
+    }
+
+    function ingestDemo() {
+      alert('Ingest demo (simulated). In full version this would pull from your local history into the vault.');
+    }
+
+    // Boot
+    window.onload = function() {
+      initGraph();
+      document.getElementById('tier-long').innerText = '312';
+      document.getElementById('tier-short').innerText = '89';
+      document.getElementById('tier-cache').innerText = '1241';
+      const hw = document.getElementById('hw-status');
+      if (hw) hw.innerText = 'HIGH • 32GB + GPU';
+    };
+
+    window.ECE_DEMO = { addRandomNode, performSearch, applyTierFilters, runMaxSimDemo };
   </script>
 </body>
 </html>
