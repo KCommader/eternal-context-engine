@@ -1,0 +1,10 @@
+{
+  "legacyEditor": false,
+  "livePreview": true,
+  "defaultViewMode": "preview",
+  "promptDelete": false,
+  "showUnsupportedFiles": false,
+  "attachmentFolderPath": "Archive/attachments",
+  "newFileLocation": "current",
+  "alwaysUpdateLinks": true
+}

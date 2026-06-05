@@ -1,0 +1,9 @@
+{
+  "accentColor": "#DFFF00",
+  "theme": "obsidian",
+  "cssTheme": "",
+  "baseFontSize": 16,
+  "textFontFamily": "Inter, system-ui, sans-serif",
+  "monospaceFontFamily": "JetBrains Mono, ui-monospace, monospace",
+  "translucency": false
+}
