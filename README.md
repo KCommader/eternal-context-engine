@@ -63,7 +63,7 @@ Your Notes (Markdown)  →  Vault (Obsidian Graph View)
 
 ```bash
 # 1. Clone
-git clone https://github.com/YOUR_USERNAME/eternal-context-engine
+git clone https://github.com/KCommader/eternal-context-engine
 cd eternal-context-engine
 
 # 2. Setup (creates venv, installs deps, scaffolds vault)
