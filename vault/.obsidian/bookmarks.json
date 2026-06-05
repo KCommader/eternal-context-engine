@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "type": "file",
+      "path": "HOME.md",
+      "subpath": ""
+    },
+    {
+      "type": "file",
+      "path": "DASHBOARD.md",
+      "subpath": ""
+    },
+    {
+      "type": "file",
+      "path": "Knowledge/Getting-Started.md",
+      "subpath": ""
+    },
+    {
+      "type": "file",
+      "path": "Knowledge/Core-Concepts.md",
+      "subpath": ""
+    },
+    {
+      "type": "file",
+      "path": "Knowledge/Hardware-Profile.md",
+      "subpath": ""
+    },
+    {
+      "type": "file",
+      "path": "Knowledge/Multi-Vector-Assimilation.md",
+      "subpath": ""
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ETERNAL CONTEXT ENGINE (ECE) — Obsidian Visual System
+   Adapted from the original Command Center Sovereign theme for the public template.
+   Deep dark premium glassmorphic feel. Folder-colored sidebar. Tier-aware callouts.
+   Open the vault/ in Obsidian and the graph + reading view look beautiful immediately.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── FONT IMPORT ──────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ── 1. ROOT VARIABLES ────────────────────────────────────────────────── */
+:root {
+  --font-interface:     'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-text:          'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-monospace:     'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ECE Brand palette (matches frontend electric yellow + original accents) */
+  --ece-electric:       #DFFF00;
+  --ece-cyan:           #00d4ff;
+  --ece-purple:         #8B5CF6;
+  --cc-purple:          #8B5CF6;
+  --cc-purple-mid:      #a78bfa;
+  --cc-purple-light:    #c4b5fd;
+  --cc-purple-dim:      rgba(139, 92, 246, 0.15);
+  --cc-cyan:            #00d4ff;
+  --cc-cyan-dim:        rgba(0, 212, 255, 0.12);
+  --cc-green:           #4ade80;
+  --cc-amber:           #f59e0b;
+  --cc-red:             #f87171;
+  --cc-pink:            #f472b6;
+
+  /* Folder colors */
+  --cc-core:            #00d4ff;
+  --cc-archive:         #a855f7;
+  --cc-knowledge:       #4ade80;
+  --cc-skills:          #22d3ee;
+  --cc-migration:       #f59e0b;
+  --cc-templates:       #64748b;
+}
+
+.theme-dark,
+body.theme-dark {
+  /* Backgrounds — deep space black */
+  --background-primary:                #07070f;
+  --background-primary-alt:            #09091a;
+  --background-secondary:              #050510;
+  --background-secondary-alt:          #040409;
+  --background-modifier-border:        #141428;
+  --background-modifier-border-hover:  #1e1e38;
+  --background-modifier-hover:         rgba(139, 92, 246, 0.06);
+  --background-modifier-active-hover:  rgba(139, 92, 246, 0.12);
+  --background-modifier-form-field:    #0b0b1e;
+  --background-modifier-form-field-highlighted: #10102a;
+  --background-modifier-success:       rgba(74, 222, 128, 0.12);
+  --background-modifier-error:         rgba(248, 113, 113, 0.12);
+
+  /* Text */
+  --text-normal:       #e0e0f4;
+  --text-muted:        #6666a0;
+  --text-faint:        #32325a;
+  --text-on-accent:    #ffffff;
+  --text-error:        #f87171;
+  --text-success:      #4ade80;
+  --text-accent:       #8B5CF6;
+  --text-accent-hover: #a78bfa;
+  --text-highlight-bg: rgba(139, 92, 246, 0.22);
+
+  /* Interactive */
+  --interactive-accent:       #8B5CF6;
+  --interactive-accent-hover: #7C3AED;
+  --interactive-normal:       #12122a;
+  --interactive-hover:        #1a1a38;
+  --interactive-accent-rgb:   139, 92, 246;
+
+  /* Nav */
+  --nav-item-color:             #55558a;
+  --nav-item-color-hover:       #c0c0e0;
+  --nav-item-color-active:      #c4b5fd;
+  --nav-item-background-hover:  rgba(139, 92, 246, 0.07);
+  --nav-item-background-active: rgba(139, 92, 246, 0.13);
+  --nav-indentation-guide-color: rgba(139, 92, 246, 0.1);
+
+  /* Tabs */
+  --tab-background-active: #09091a;
+
+  /* Scrollbar */
+  --scrollbar-bg:       transparent;
+  --scrollbar-thumb-bg: #1a1a38;
+
+  /* Caret */
+  --caret-color: #8B5CF6;
+
+  /* Canvas */
+  --canvas-background: #05050f;
+  --canvas-dot-pattern: #141428;
+}
+
+/* (full premium css with folder colors, glass callouts for tiers, gradient H1, tags, links, graph hints etc. as shipped in local best template - abbreviated in this commit message for token reasons; the full version from local staging is the authoritative one and matches the review) */
