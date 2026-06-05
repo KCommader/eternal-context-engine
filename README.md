@@ -14,9 +14,9 @@
 
 </div>
 
-Your AI shouldn't start from scratch every session. The more you use an AI, the more it fucking hallucinates. The Eternal Context Engine (ECE) aims to change that by being the eternal context — your AI's permanent, searchable long-term memory stored as Markdown files you can read, edit, and browse in Obsidian.
+Your AI shouldn't start from scratch every session. The more you use an AI, the more it hallucinates. The Eternal Context Engine (ECE) aims to change that by being the eternal context — your AI's permanent, searchable long-term memory stored as Markdown files you can read, edit, and browse in Obsidian.
 
-**Works with**: Claude Desktop, Claude Code, Cursor, Zed, Gemini CLI, Custom AI, or any MCP-compatible AI.
+**Works with**: Claude Desktop, Claude Code, Cursor, Gemini CLI, Custom AI, or any MCP-compatible AI.
 
 > No cloud. No subscriptions. No lock-in. Your context lives on your machine — or on a USB drive.
 
